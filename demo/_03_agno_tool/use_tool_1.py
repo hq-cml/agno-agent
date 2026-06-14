@@ -1,4 +1,4 @@
-# demo03: 使用工具
+# demo03_1: 使用工具基础
 from agno.agent import Agent
 from agno.tools import tool
 from agno.tools.baidusearch import BaiduSearchTools # 百度的工具，综合搜索
@@ -12,8 +12,21 @@ from demo.create_model import create_model
 # 准备一个模型
 myModel = create_model()
 
+# 注意：@tool和@tool()，是有一定区别的
+# @tool：就是传统的装饰器
+# @tool()：相当于是先调用 tool()，然后将其返回值作为装饰器使用
+#   这意味着，tool()是一个工厂函数，它可以根据入参不同，返回不同的装饰器
+#   因为这里是无参的，所以建议直接用@tool而非@tool()
+
+# agno 框架的 tool 通常支持两种用法，让开发者可以灵活配置：
+# @tool：快速定义工具，使用默认元数据（函数名、文档字符串等自动提取）。
+# @tool(...)：需要自定义工具属性时使用，例如：
+# @tool(name="weather", description="获取天气")
+# def getWeather(city: str) -> str:
+#     ...
+
 # 自定义工具
-@tool()
+@tool
 def myCalc(expression):
     """
     计算一个数学表达式
