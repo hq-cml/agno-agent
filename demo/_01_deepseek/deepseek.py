@@ -16,5 +16,4 @@ response = client.chat.completions.create(
     extra_body={"thinking": {"type": "enabled"}}
 )
 
-print("系统apiKey:", os.environ.get('DEEPSEEK_API_KEY'))
 print(response.choices[0].message.content)
