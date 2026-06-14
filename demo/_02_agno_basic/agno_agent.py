@@ -1,6 +1,8 @@
 # demo02: 基于模型的基础问答机器人
-
+import sys, os
 from agno.agent import Agent
+#将项目根目录（当前文件所在目录向上两级）添加到Python模块搜索路径的最前面，确保能优先从该目录导入模块，解create_model决跨目录导入问题。
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 from demo.create_model import create_model
 
 # 准备一个模型
