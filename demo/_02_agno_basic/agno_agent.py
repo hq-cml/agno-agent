@@ -1,15 +1,10 @@
 # demo02: 基于模型的基础问答机器人
 
 from agno.agent import Agent
-from agno.models.openai.like import OpenAILike
-import os
+from demo.create_model import create_model
 
 # 准备一个模型
-myModel = OpenAILike(
-    id="deepseek-v4-flash",
-    api_key=os.environ.get('DEEPSEEK_API_KEY'),
-    base_url="https://api.deepseek.com",
-)
+myModel = create_model()
 
 # 基于准备好的模型创建一个Agent
 # 参数：
@@ -21,11 +16,11 @@ myModel = OpenAILike(
 agent = Agent(
     name="agno v0.1",
     model=myModel,
-    #description="你是一个测试Agent，负责回答类似问题。要求是必须用中文回复！",
-    description="你是一个测试Agent，负责回答类似问题。",
+    #description="你是一个测试Agent，负责回答各类问题。要求是必须用中文回复！",
+    description="你是一个测试Agent，负责回答各类问题。",
     instructions="无论问题是何种语言，要求是必须用中文回复！",
-    markdown=False,   #
-    debug_mode=True, # 可以看到Agent运行细节日志、token消耗等情况
+    markdown=False,
+    debug_mode=True,
 )
 
 # run运行一个具体任务，不关心输出的时候执行
