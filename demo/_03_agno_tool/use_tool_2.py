@@ -1,4 +1,4 @@
-# demo03_2: 使用工具进阶
+# demo03_2: 使用工具进阶---工具集
 from agno.agent import Agent
 from agno.tools import tool
 from agno.tools import Toolkit
@@ -129,8 +129,8 @@ agent = Agent(
     name="agno v0.1",
     model=myModel,
     tools=[
-        getWeather,
-        FileToolkit(),
+        getWeather,    # 使用自定义工具
+        FileToolkit(), # 使用工具集
     ],
     description="你是一个通用Agent，负责回答各类问题或者执行一些力所能及的任务。",
     instructions="如果有符合条件的tool，优先使用tool！",
