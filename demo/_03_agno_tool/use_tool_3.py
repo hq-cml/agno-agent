@@ -1,4 +1,4 @@
-# demo03_3: 使用工具进阶---数据库相关
+# demo03_3: 使用工具进阶---数据库相关 & 模型输入输出约束
 from agno.agent import Agent
 from agno.tools import tool
 
@@ -129,7 +129,7 @@ class QueryResult(BaseModel):
     has_more:bool= Field(description="是否还有更多数据未返回")
 
 # 准备一个模型
-myModel = create_model()
+myModel = create_model("deepseek-v4-pro")
 
 agent = Agent(
     name="agno v0.1",
@@ -141,13 +141,27 @@ agent = Agent(
     description="你是一个通用Agent，负责回答各类问题或者执行一些力所能及的任务。",
     instructions="如果有符合条件的tool，优先使用tool！",
     debug_mode=True,
+
+    # 输入约束：
+    # 结构化的输入，便于后续agent之间的交互
     input_schema=DataipaseQuery,
-    output_schema=QueryResult,
+
+    # 输出约束：
+    # 但是DeepSeek不太支持这种response_format约束，所以如果要使用这个功能，需要更换其他模型，或者在提示词中进行约束
+    # output_schema=QueryResult,
 )
 
-ret = agent.run("看下年龄25岁的都有谁")
+#ret = agent.run("看下年龄25岁的都有谁")
 
-print(f"\n\n\n-----------------------------\n运行结果如下：\n{ret.reasoning_content}")
+# 使用了结构化的输入，就不能再使用自然语言了，否则会报错
+ret = agent.run(DataipaseQuery(
+    table_name="user",
+    condition="age = 25",
+    limit=5,
+    columns=["name", "age", "email"]
+))
+
+print(f"\n\n\n-----------------------------\n运行结果如下：\n{ret.content}")
 
 # ----------------- 示例用法 -----------------
 # if __name__ == "__main__":

@@ -142,5 +142,5 @@ agent = Agent(
 #ret = agent.run("看一下当前目录是否存在test.txt，如果存在则追加写入一行hello agno。如果不存在则创建一个test.txt文件。")
 ret = agent.run("看一下当前目录都有哪些文件？")
 
-print(f"\n\n\n-----------------------------\n运行结果如下：\n{ret.reasoning_content}")
+print(f"\n\n\n-----------------------------\n运行结果如下：\n{ret.content}")
 

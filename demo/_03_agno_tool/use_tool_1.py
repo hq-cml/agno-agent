@@ -53,4 +53,4 @@ agent = Agent(
 #ret = agent.run("歌手黄大炜现状？")
 ret = agent.run("歌手黄大炜去世了吗？")
 
-print(f"\n\n\n-----------------------------\n运行结果如下：\n{ret.reasoning_content}")
+print(f"\n\n\n-----------------------------\n运行结果如下：\n{ret.content}")
