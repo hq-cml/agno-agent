@@ -1,6 +1,9 @@
-# demo05_02: 记忆系统：智能记忆
-# Note：它和自动记忆的区别？
+# demo05_02: 记忆系统：agentic模式
+# Note：它和自动记忆的区别：
+# 自动记忆：每次run()即每轮对话后台额外调用一次LLM提炼并存储，Agent无感，不知道后台有进行存储动作，所以也无法主动删除记忆
+# Agentic模式：给Agent提供Mem相关tool，Agent知道自己拥有了tool，所以在对话中会自主调用tool进行记忆，也可以调用删除tool删除记忆
 
+import pprint
 import sys, os
 #将项目根目录（当前文件所在目录向上两级）添加到Python模块搜索路径的最前面，确保能优先从该目录导入模块，解create_model决跨目录导入问题。
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
@@ -26,11 +29,21 @@ agent = Agent(
     enable_agentic_memory=True,# 开启agentic记忆
 )
 
+# 查看具体记忆了哪些内容信息
+def see_memory():
+    mems = agent.get_user_memories(
+        user_id="10001"
+    )
+    pprint.pprint(mems)
+
 def store_memory():
-    ret = agent.run('''
+    ret = agent.run(
+        input='''
     1. 李四，土木工作者，80岁;
     2. 张三，Python开发者;
-    3. 王五，法官，在江苏''')
+    3. 王五，法官，在江苏''',
+        user_id="10001",
+    )
     print(f"\n回复：{ret.content}\n")
 
 first_run = not os.path.exists(DB_PATH)
@@ -40,13 +53,17 @@ if first_run:
 
 
 def remove_memory():
-    ret = agent.run('''
-    删除王五的信息''')
+    ret = agent.run(
+        input='''
+    删除王五的信息''',
+        user_id="10001",)
     print(f"\n回复：{ret.content}\n")
 
+#see_memory()
+
+ret = agent.run("王五是谁，今年多少岁？", user_id="10001")
+print(f"\n回复：{ret.content}\n")
 
 #remove_memory()
 
 
-ret = agent.run("王五是谁，今年多少岁？")
-print(f"\n回复：{ret.content}\n")
