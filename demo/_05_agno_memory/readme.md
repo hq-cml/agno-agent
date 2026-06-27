@@ -8,6 +8,7 @@
 
 ### 实现架构
 * MemoryManager，Agno通过这个类，来实现记忆的功能
+* 可以通过定制MemoryManager，实现自定义的记忆功能
 
 ### 核心的关键
 **是基于user_id的记忆：**

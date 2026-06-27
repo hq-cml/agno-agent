@@ -56,12 +56,6 @@ def see_memory():
     mems = agent.get_user_memories(user_id="10001")
     pprint.pprint(mems)
 
-first_run = not os.path.exists(DB_PATH)
-if first_run:
-    print("【首次运行】告诉Agent信息，写入数据库")
-    store_memory()
-
-
 def update_memory():
     ret = agent.run('''
     王五其实是河北人''', user_id="10001")
@@ -83,13 +77,18 @@ def mem_retrieve():
     )
     print(f"\n检索结果：{ret}\n") # 为什么不生效
 
-#see_memory()
 
-# update_memory()
-# see_memory()
+first_run = not os.path.exists(DB_PATH)
+if first_run:
+    print("【首次运行】告诉Agent信息，写入数据库")
+    store_memory()
+else:
+    #see_memory()
 
-# ret = agent.run("王五是谁，多大年龄？", user_id="10001")
-# print(f"\n回复：{ret.content}\n")
+    # update_memory()
+    # see_memory()
 
+    # ret = agent.run("王五是谁，多大年龄？", user_id="10001")
+    # print(f"\n回复：{ret.content}\n")
 
-mem_retrieve()
+    mem_retrieve()

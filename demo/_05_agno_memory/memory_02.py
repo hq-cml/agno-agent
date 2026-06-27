@@ -5,7 +5,7 @@
 
 import pprint
 import sys, os
-#将项目根目录（当前文件所在目录向上两级）添加到Python模块搜索路径的最前面，确保能优先从该目录导入模块，解create_model决跨目录导入问题。
+#将项目根目录（当前文件所在目录向上两级）添加到Python模块搜索路径的最前面，确保能优先从该目录导入模块，解决create_model跨目录导入问题。
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 from demo.create_model import create_model
 
@@ -46,12 +46,6 @@ def store_memory():
     )
     print(f"\n回复：{ret.content}\n")
 
-first_run = not os.path.exists(DB_PATH)
-if first_run:
-    print("【首次运行】告诉Agent信息，写入数据库")
-    store_memory()
-
-
 def remove_memory():
     ret = agent.run(
         input='''
@@ -59,11 +53,17 @@ def remove_memory():
         user_id="10001",)
     print(f"\n回复：{ret.content}\n")
 
-#see_memory()
 
-ret = agent.run("王五是谁，今年多少岁？", user_id="10001")
-print(f"\n回复：{ret.content}\n")
+first_run = not os.path.exists(DB_PATH)
+if first_run:
+    print("【首次运行】告诉Agent信息，写入数据库")
+    store_memory()
+else:
+    #see_memory()
 
-#remove_memory()
+    ret = agent.run("王五是谁，今年多少岁？", user_id="10001")
+    print(f"\n回复：{ret.content}\n")
+
+    #remove_memory()
 
 

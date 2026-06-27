@@ -31,7 +31,7 @@ def init_db():
         ''')
         conn.commit()
 
-@tool
+#@tool
 def insert_users(users: List[Dict[str, Any]]) -> int:
     """
     插入多条用户数据到 user 表
@@ -64,7 +64,7 @@ def insert_users(users: List[Dict[str, Any]]) -> int:
         conn.commit()
     return inserted
 
-@tool
+#@tool
 def query_users(conditions: Optional[Dict[str, Any]] = None) -> List[Dict[str, Any]]:
     """
     根据条件查询用户信息
@@ -131,7 +131,21 @@ class QueryResult(BaseModel):
 # 准备一个模型
 myModel = create_model("deepseek-v4-pro")
 
-agent = Agent(
+# 普通Agent
+agent1 = Agent(
+    name="agno v0.1",
+    model=myModel,
+    tools=[
+        insert_users,
+        query_users,
+    ],
+    description="你是一个通用Agent，负责回答各类问题或者执行一些力所能及的任务。",
+    instructions="如果有符合条件的tool，优先使用tool！",
+    debug_mode=True,
+)
+
+# 结构化输入输出
+agent2 = Agent(
     name="agno v0.1",
     model=myModel,
     tools=[
@@ -151,50 +165,55 @@ agent = Agent(
     # output_schema=QueryResult,
 )
 
-#ret = agent.run("看下年龄25岁的都有谁")
+type = "normal"
 
-# 使用了结构化的输入，就不能再使用自然语言了，否则会报错
-ret = agent.run(DataipaseQuery(
-    table_name="user",
-    condition="age = 25",
-    limit=5,
-    columns=["name", "age", "email"]
-))
+first_run = not os.path.exists(DB_PATH)
+if first_run:
+    print("【首次运行】初始化数据库")
+    # 插入几条数据
+    sample_users = [
+        {"name": "张三", "age": 25, "email": "zhangsan@example.com"},
+        {"name": "李四", "age": 30, "email": "lisi@example.com"},
+        {"name": "王五", "age": 28, "email": "wangwu@example.com"},
+        {"name": "赵六", "age": 25, "email": "zhaoliu@example.com"},
+    ]
+    inserted_count = insert_users(sample_users)
+    print(f"成功插入 {inserted_count} 条记录\n")
 
-print(f"\n\n\n-----------------------------\n运行结果如下：\n{ret.content}")
+    print("【首次运行】测试查询数据库")
+    # 查询所有用户
+    all_users = query_users()
+    print("\n所有用户:")
+    for user in all_users:
+        print(user)
 
-# ----------------- 示例用法 -----------------
-# if __name__ == "__main__":
-#     # 插入几条数据
-#     sample_users = [
-#         {"name": "张三", "age": 25, "email": "zhangsan@example.com"},
-#         {"name": "李四", "age": 30, "email": "lisi@example.com"},
-#         {"name": "王五", "age": 28, "email": "wangwu@example.com"},
-#         {"name": "赵六", "age": 25, "email": "zhaoliu@example.com"},
-#     ]
-#     inserted_count = insert_users(sample_users)
-#     print(f"成功插入 {inserted_count} 条记录")
-#
-#     # 查询所有用户
-#     all_users = query_users()
-#     print("\n所有用户:")
-#     for user in all_users:
-#         print(user)
-#
-#     # 条件查询：精确匹配年龄 25
-#     age_25_users = query_users({"age": 25})
-#     print("\n年龄为25的用户:")
-#     for user in age_25_users:
-#         print(user)
-#
-#     # 模糊查询：名字包含 '张'
-#     name_like_users = query_users({"name__contains": "张"})
-#     print("\n名字包含'张'的用户:")
-#     for user in name_like_users:
-#         print(user)
-#
-#     # 组合条件：年龄 25 并且邮箱包含 'li'
-#     complex_users = query_users({"age": 25, "email__contains": "li"})
-#     print("\n年龄25且邮箱包含'li'的用户:")
-#     for user in complex_users:
-#         print(user)
+    # 条件查询：精确匹配年龄 25
+    age_25_users = query_users({"age": 25})
+    print("\n年龄为25的用户:")
+    for user in age_25_users:
+        print(user)
+
+    # 模糊查询：名字包含 '张'
+    name_like_users = query_users({"name__contains": "张"})
+    print("\n名字包含'张'的用户:")
+    for user in name_like_users:
+        print(user)
+
+    # 组合条件：年龄 25 并且邮箱包含 'li'
+    complex_users = query_users({"age": 25, "email__contains": "li"})
+    print("\n年龄25且邮箱包含'li'的用户:")
+    for user in complex_users:
+        print(user)
+elif type == "normal":
+    ret = agent1.run("看下年龄25岁的都有谁")
+    print(f"\n\n\n-----------------------------\n运行结果如下：\n{ret.content}")
+else:
+    # 使用了结构化的输入，就不能再使用自然语言了，否则会报错
+    ret = agent2.run(DataipaseQuery(
+        table_name="user",
+        condition="age = 25",
+        limit=5,
+        columns=["name", "age", "email"]
+    ))
+
+    print(f"\n\n\n-----------------------------\n运行结果如下：\n{ret.content}")

@@ -11,7 +11,7 @@ from demo.create_model import create_model
 myModel = create_model()
 
 # 自定义工具
-@tool
+#@tool
 def getWeather(city: str) -> str:
     """
     获取city对应的天气
@@ -137,10 +137,10 @@ agent = Agent(
     debug_mode=True,
 )
 
-#ret = agent.run("北京天气如何？")
+ret = agent.run("北京天气如何？")
 #ret = agent.run("当前目录创建一个文件test.txt，并写入hello world")
 #ret = agent.run("看一下当前目录是否存在test.txt，如果存在则追加写入一行hello agno。如果不存在则创建一个test.txt文件。")
-ret = agent.run("看一下当前目录都有哪些文件？")
+#ret = agent.run("看一下当前目录都有哪些文件？")
 
 print(f"\n\n\n-----------------------------\n运行结果如下：\n{ret.content}")
 

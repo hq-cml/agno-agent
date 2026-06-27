@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 from demo.create_model import create_model
 
 from agno.agent import Agent
-from agno.workflow import Workflow, StepInput, StepOutput
+from agno.workflow import Workflow
 from agno.workflow.step import Step
 from agno.workflow.parallel import Parallel
 

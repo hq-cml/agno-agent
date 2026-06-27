@@ -1,10 +1,10 @@
 # demo05_01: 记忆系统：自动记忆
-# demo04中使用的db，是基于一次session id，并不实用，所以它只是演示了db怎么用
+# 对比：demo04中使用的db，是基于一次session id，并不实用，所以它只是演示了db怎么用
 # Note：本实例则是更加适合实际使用的db，自动记忆每次对话Agent会自动提炼内容记载到db中
 
 import pprint
 import sys, os
-#将项目根目录（当前文件所在目录向上两级）添加到Python模块搜索路径的最前面，确保能优先从该目录导入模块，解create_model决跨目录导入问题。
+#将项目根目录（当前文件所在目录向上两级）添加到Python模块搜索路径的最前面，确保能优先从该目录导入模块，解决create_model跨目录导入问题。
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 from demo.create_model import create_model
 
@@ -64,16 +64,14 @@ first_run = not os.path.exists(DB_PATH)
 if first_run:
     print("【首次运行】告诉Agent信息，写入数据库")
     store_memory()
+else:
+    #see_memory()
 
+    #change_memory()
 
+    # 这样是查看不到记忆的，因为没有user_id
+    # ret = agent.run("王五是谁？")
+    # print(f"\n回复：{ret.content}\n")
 
-#see_memory()
-
-#change_memory()
-
-# 这样是查看不到记忆的，因为没有user_id
-# ret = agent.run("王五是谁？")
-# print(f"\n回复：{ret.content}\n")
-
-ret = agent.run("王五是谁？", user_id="10001")
-print(f"\n回复：{ret.content}\n")
+    ret = agent.run("王五是谁？", user_id="10001")
+    print(f"\n回复：{ret.content}\n")

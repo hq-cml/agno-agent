@@ -17,24 +17,25 @@
   * success: bool是否成功
   * stop: bool是否终止整个工作流
 * Step串联
-  * StepA的StepOutput.content->StepB的StepInput.previous_step_content
+  * StepA的StepOutput.content --> StepB的StepInput.previous_step_content
 
 ### 关于Steps
 * Step容器串联
   * 把一组Step封装成一个整体，带来如下特性
-  * 复用:同一个Steps 可以在多个Workflow 中引用
-  * 封装:对外暴露一个名称，隐藏内部细节
-  * 组合:可以和其他Step、Condition、Loop混搭
+    * 复用:同一个Steps 可以在多个Workflow 中引用
+    * 封装:对外暴露一个名称，隐藏内部细节
+    * 组合:可以和其他Step、Condition、Loop混搭
 * Workflow 的steps 列表中
   * 可以直接放Step 对象
   * 也可以放 Steps、Agent、Team
   * 甚至callable 函数--框架会自动包装。
 
 ### 四类控制流程
-* Condition：if else
+* Condition：条件if else
 * Parallel：并行化
 * Loop：循环
-* Router：动态路由，根据运行时条件动态决定下一步骤(与Condition的区别：Condition是二选一(if/else)，Router可以多选一甚至多选多)
+* Router：动态路由，根据运行时条件动态决定下一步骤
+  * (与Condition的区别：Condition是二选一(if/else)，Router可以多选一甚至多选多)
 
 ### Session State
 * 之前介绍的Input和Output，是串行的数据共享

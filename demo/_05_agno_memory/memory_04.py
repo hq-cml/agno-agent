@@ -19,8 +19,17 @@ myModel = create_model()
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "mem_share.db")
 myDb = SqliteDb(db_file=DB_PATH)
 
-
+# 定义两个并行的Agent
 agent = Agent(
+    name="agno v0.1",
+    model=myModel,
+    description="你是一个通用Agent，负责回答各类问题。",
+    debug_mode=True,
+    db=myDb,
+    update_memory_on_run=True,
+)
+
+agent2 = Agent(
     name="agno v0.1",
     model=myModel,
     description="你是一个通用Agent，负责回答各类问题。",
@@ -52,26 +61,18 @@ if first_run:
         session_id=SESSION_ID_1,
     )
     print(f"\n用户2录入记忆：{ret.content}\n")
+else:
+    # 例1：用户1在会话2中，仍能读取到用户1在会话1中录入的记忆
+    ret = agent.run(
+            input='''李四是谁''',
+            user_id=USER_ID_1,
+            session_id=SESSION_ID_2,
+        )
+    print(f"\n用户1回忆：{ret.content}\n")
 
-# 例1：用户1在会话2中，仍能读取到用户1在会话1中录入的记忆
-ret = agent.run(
-        input='''李四是谁''',
-        user_id=USER_ID_1,
-        session_id=SESSION_ID_2,
-    )
-print(f"\n用户1回忆：{ret.content}\n")
-
-# 例2：多Agent也能共享记忆，只要是同一个User_id
-agent2 = Agent(
-    name="agno v0.1",
-    model=myModel,
-    description="你是一个通用Agent，负责回答各类问题。",
-    debug_mode=True,
-    db=myDb,
-    update_memory_on_run=True,
-)
-ret = agent2.run(
-        input='''李四是谁''',
-        user_id=USER_ID_1,
-    )
-print(f"\nAgent2读取user_id的回忆：{ret.content}\n")
+    # 例2：多Agent也能共享记忆，只要是同一个User_id
+    ret = agent2.run(
+            input='''李四是谁''',
+            user_id=USER_ID_1,
+        )
+    print(f"\nAgent2读取user_id的回忆：{ret.content}\n")

@@ -2,15 +2,15 @@
 #
 # sqllite是一种本地轻量级嵌入式数据库，主要特点：
 # 无需安装服务，直接读写本地文件；单个 .db 文件；适用于移动端、桌面应用、小型项目、原型开发
-# 目前系统sqllite太太旧了，所以用 pysqlite3 替换系统自带的旧版 sqlite3（系统版本3.7不支持UPSERT语法）
-# pysqlite3 是一种驱动sqllite，但是它自带了一个新版本的 SQLite 引擎（编译好的 .so 动态库），打包在 Python 包里。
+# 目前系统sqllite太旧了，所以用 pysqlite3 替换系统自带的旧版 sqlite3（系统版本3.7不支持UPSERT语法）
+# pysqlite3 是一种sqllite驱动，但是它自带了一个新版本的 SQLite 引擎（编译好的 .so 动态库），打包在 Python 包里。
 # 所以代码里做的这个替换：
 # __import__('pysqlite3')
 # sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 # 效果是：让 Python 的 import sqlite3 实际加载 pysqlite3，从而使用它自带的新版 SQLite 引擎，绕过了系统旧版本的限制。
 
 import sys, os
-#将项目根目录（当前文件所在目录向上两级）添加到Python模块搜索路径的最前面，确保能优先从该目录导入模块，解create_model决跨目录导入问题。
+#将项目根目录（当前文件所在目录向上两级）添加到Python模块搜索路径的最前面，确保能优先从该目录导入模块，解决create_model跨目录导入问题。
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 from demo.create_model import create_model
 
