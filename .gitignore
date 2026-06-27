@@ -2,3 +2,5 @@
 .venv
 demo/__pycache__/
 *.db
+demo/_08_rag_knowledge/chroma_*
+*.txt

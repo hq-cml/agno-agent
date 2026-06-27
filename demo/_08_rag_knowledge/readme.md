@@ -1,6 +1,6 @@
 ### Agno两种RAG模式：
-* Traditional RAG: 每次提问都检索
-* Agentic RAG: Agent自主判断是否检索，默认模式（省Token）
+* Traditional RAG: 每次提问都检索并将检索结果追加到context
+* Agentic RAG: 默认模式（省Token），Agent自主判断是否检索，无关问题不被追加到context
 
 ### Agno RAG 五个组成部分：
 * Contents DB: 存储元信息
@@ -22,21 +22,19 @@
 * Markdown：按标题层级拆分，Markdown
 * Agentic：LLM决定切分点，最精确成本最高
 
-### Agno RAG 搜索类型与重排：
-* Vector：按向量相似度
-* KeyWord：按关键字
-* Hybrid：混合（推荐）
+### Agno RAG 搜索类型：
+* Vector：语义（向量）相似度，适合意图模糊的问题
+* KeyWord：关键字匹配，适合精确术语查询
+* Hybrid：两者结合（推荐），兼顾语义和精确匹配
 
-### Agno RAG 知识过滤：
+### Agno RAG 知识检索&过滤：
 * 静态过滤：规则写死
 * Agentic过滤：LLM自主决定
 * 重点：预先打标签，否则无从过滤
 
 ### Agno RAG 加载：
-* 接口统一，支持多种渠道（重点是打标签）
-  * 本地文件
+* 接口统一，支持多种渠道（重点是加载的同时打标签）
+  * 本地文件加载
   * URL远程加载
 
 
-### 参考资料：
-* Agno官方的CookBook
