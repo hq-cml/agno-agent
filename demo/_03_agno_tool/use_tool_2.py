@@ -10,6 +10,7 @@ from demo.create_model import create_model
 # 准备一个模型
 myModel = create_model()
 
+# why 这个@tool为什么可有可无
 # 自定义工具
 #@tool
 def getWeather(city: str) -> str:

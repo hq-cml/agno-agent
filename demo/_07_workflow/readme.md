@@ -43,7 +43,7 @@
 * 利用db实现
 
 ### Structured IO
-* input_schema & output_schma
+* 结构化的IO：input_schema & output_schma
 * 使用pydantic类，避免脏数据全流程污染
 
 ### Workflow嵌套
@@ -57,3 +57,12 @@
 ### CEL表达式
 
 ### 安全护栏
+* 在步骤执行前/后进行安全检查
+* 通过pre_hooks/post_hooks机制，拦截危险输入或不合规输出
+
+### Early Stopping提前终止 
+* 检测到异常时立即中断流程
+* 通过StepOutput(stop=True)实现，后续步骤将不再执行
+
+### Human in the Loop (HITL)
+* 关键步骤要求人工确认
