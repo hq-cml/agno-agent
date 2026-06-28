@@ -42,8 +42,9 @@
 * 一旦Agent重启了，则session id将丢失，所以要想记忆对话历史，应该指定session id或者不重启agent
 
 ### Few-shot
+* 用示例教Agent行为模式，通常通常会比单纯instruction要好
+* 例子放在additional_input，且成对出现(user,assistant)，一问一答形成引导样例
 * additional_input=[{"role":"user","content":"xxx"},{"role":"assistant","content":"xxx"}]
-* 给LLM一些例子，通常效果会比instruction要好
 
 ### 如何看到到底发送了什么？
 * debug_mode=True
