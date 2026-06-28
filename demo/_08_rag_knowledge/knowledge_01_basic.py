@@ -106,7 +106,7 @@ def store_knowledge():
         print(f"    ✗ URL 导入失败: {e}")
         print("    尝试使用备用文本内容...")
         knowledge.insert(
-            content="""
+            text_content="""
             Agno 是一个轻量级的 AI Agent 框架。
             它支持多种 LLM 后端，包括 OpenAI、Anthropic 等。
             Agno 的核心特性包括：
