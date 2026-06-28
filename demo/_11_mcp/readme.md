@@ -6,7 +6,7 @@
 * stidio: 通过command启动，标准输入输出
 * streamabel http: 流式响应，远程
 
-### Agno MCP工具过滤：
+### Agno MCP tool 过滤：
 * 指定过滤，可以节省token
 * include_tools 指定工具
 * exclude_tools 排除工具
